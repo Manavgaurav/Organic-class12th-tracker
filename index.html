@@ -7,8 +7,8 @@
   
   <!-- Modern Clean Typography: Plus Jakarta Sans & JetBrains Mono -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com">
-  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,400&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,400&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
   
   <!-- FontAwesome 6 Icons -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
@@ -624,7 +624,7 @@
       100% { opacity: 1; transform: translateY(0) scale(1); }
     }
 
-    /* Lecture Grid Layout */
+    /* --- NEW AESTHETIC GRID LAYOUT FOR CARDS --- */
     .lecture-grid {
       display: grid;
       grid-template-columns: repeat(auto-fill, minmax(310px, 1fr));
@@ -684,6 +684,7 @@
       justify-content: space-between;
       align-items: flex-start;
     }
+    /* Index Badge */
     .lec-index {
       width: 36px;
       height: 36px;
@@ -758,6 +759,7 @@
       gap: 8px;
     }
     
+    /* Buttons / CTAs */
     .btn-action {
       padding: 9px 14px;
       border-radius: 12px;
@@ -784,7 +786,7 @@
     .btn-notes-edit { background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(255, 255, 255, 0.08); color: var(--text-muted); padding: 9px 12px; }
     .btn-notes-edit:hover { background: rgba(255, 255, 255, 0.12); color: #fff; transform: translateY(-1px); }
 
-    /* Controls */
+    /* Controls (Status / Rev with Micro-Interactions) */
     .lec-controls {
       display: grid;
       grid-template-columns: 1fr 1fr;
@@ -802,7 +804,7 @@
       cursor: pointer;
       transition: all 0.25s ease;
       width: 100%;
-      appearance: none;
+      appearance: none; /* Make dropdown look cleaner */
       text-align: center;
     }
     .status-dropdown.completed { background: rgba(16, 185, 129, 0.18); border-color: rgba(16, 185, 129, 0.45); color: #34d399; box-shadow: 0 0 10px rgba(16, 185, 129, 0.2); }
@@ -829,7 +831,7 @@
     .rev-badge.pending { background: rgba(239, 68, 68, 0.1); border-color: rgba(239, 68, 68, 0.25); color: #f87171; }
     .rev-badge.done { background: rgba(16, 185, 129, 0.15); border-color: rgba(16, 185, 129, 0.4); color: #34d399; box-shadow: 0 0 10px rgba(16, 185, 129, 0.25); }
 
-    /* Modal */
+    /* Modal for Quick Note / Edit */
     .modal-backdrop {
       position: fixed;
       inset: 0;
@@ -873,7 +875,7 @@
     .modal-input-field:focus { border-color: var(--cyan-bright); box-shadow: 0 0 12px rgba(0, 242, 254, 0.3); }
     .modal-btns { display: flex; justify-content: flex-end; gap: 10px; }
 
-    /* Footer & Aesthetic Visitor Pill */
+    /* Watermark / Footer */
     .site-footer {
       margin-top: 48px;
       padding: 24px 0 10px 0;
@@ -882,7 +884,7 @@
       flex-direction: column;
       align-items: center;
       justify-content: center;
-      gap: 12px;
+      gap: 10px;
     }
     .watermark-badge {
       display: inline-flex;
@@ -905,54 +907,6 @@
     .watermark-name { color: #38bdf8; font-weight: 800; letter-spacing: 0.4px; text-shadow: 0 0 12px rgba(56, 189, 248, 0.4); }
     @keyframes pulse-bolt { 0%, 100% { transform: scale(1); filter: drop-shadow(0 0 6px rgba(251, 191, 36, 0.6)); } 50% { transform: scale(1.18); filter: drop-shadow(0 0 14px rgba(251, 191, 36, 0.95)); } }
 
-    .custom-visitor-pill {
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      background: rgba(14, 20, 36, 0.7);
-      border: 1px solid rgba(56, 189, 248, 0.25);
-      padding: 7px 18px;
-      border-radius: 999px;
-      backdrop-filter: blur(16px);
-      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
-      transition: all 0.3s ease;
-      cursor: default;
-    }
-    .custom-visitor-pill:hover {
-      border-color: rgba(56, 189, 248, 0.5);
-      box-shadow: 0 0 18px rgba(0, 242, 254, 0.25);
-      transform: translateY(-1px);
-    }
-    .live-pulse-dot {
-      width: 7px;
-      height: 7px;
-      border-radius: 50%;
-      background: #10b981;
-      box-shadow: 0 0 10px #10b981;
-      animation: pulse-live 2s infinite ease-in-out;
-    }
-    .visitor-label {
-      font-size: 0.78rem;
-      font-weight: 600;
-      color: #94a3b8;
-      letter-spacing: 0.3px;
-    }
-    .visitor-number {
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 0.85rem;
-      font-weight: 800;
-      color: #38bdf8;
-      text-shadow: 0 0 10px rgba(56, 189, 248, 0.6);
-      background: rgba(56, 189, 248, 0.1);
-      padding: 2px 8px;
-      border-radius: 6px;
-      border: 1px solid rgba(56, 189, 248, 0.2);
-    }
-    @keyframes pulse-live {
-      0%, 100% { opacity: 1; transform: scale(1); }
-      50% { opacity: 0.35; transform: scale(0.75); }
-    }
-
     /* Responsive */
     @media (max-width: 900px) {
       .lecture-grid { grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); }
@@ -961,6 +915,52 @@
       .chapter-section { padding: 20px 16px; }
       .lec-actions { grid-template-columns: 1fr; }
     }
+  
+    /* Global Visitor Counter */
+    .visitor-counter {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      margin-top: 4px;
+      padding: 8px 16px;
+      background: rgba(14, 20, 36, 0.55);
+      border: 1px solid rgba(56, 189, 248, 0.14);
+      border-radius: 999px;
+      color: #64748b;
+      font-size: 0.72rem;
+      font-weight: 600;
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      box-shadow:
+        0 4px 16px rgba(0, 0, 0, 0.25),
+        inset 0 1px 0 rgba(255, 255, 255, 0.04);
+      transition: all 0.25s ease;
+    }
+
+    .visitor-counter:hover {
+      border-color: rgba(56, 189, 248, 0.35);
+      box-shadow:
+        0 6px 22px rgba(0, 0, 0, 0.35),
+        0 0 16px rgba(0, 242, 254, 0.12);
+      transform: translateY(-1px);
+    }
+
+    .visitor-counter i {
+      color: #38bdf8;
+      font-size: 0.7rem;
+      filter: drop-shadow(0 0 5px rgba(56, 189, 248, 0.5));
+    }
+
+    .visitor-counter strong {
+      color: #ffffff;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.76rem;
+      font-weight: 600;
+      min-width: 28px;
+      text-align: center;
+    }
+
   </style>
 </head>
 <body>
@@ -1080,7 +1080,7 @@
     <!-- CHAPTER SECTIONS CONTAINER -->
     <main id="chaptersContainer"></main>
 
-    <!-- Footer Watermark & Live Visitor Meter -->
+    <!-- Footer Watermark Section -->
     <footer class="site-footer">
       <div class="watermark-badge">
         <span>Crafted with</span>
@@ -1089,13 +1089,12 @@
         <span class="watermark-name">Manav</span>
       </div>
       <p style="font-size: 0.72rem; color: var(--text-dim); margin-top: 4px;">IIT-JEE 2027 • Organic Chemistry Master Tracker</p>
-
-      <!-- Clean Aesthetic Live Counter (Exact UI Match) -->
-      <div class="custom-visitor-pill" title="Realtime Global Page Visits">
-        <span class="live-pulse-dot"></span>
-        <span class="visitor-label">Total Visits</span>
-        <span class="visitor-number" id="globalVisitorCount">...</span>
+      <div class="visitor-counter" aria-label="Global page views">
+        <i class="fa-solid fa-eye"></i>
+        <span>Global Views</span>
+        <strong id="global-view-count">—</strong>
       </div>
+
     </footer>
 
   </div>
@@ -1126,7 +1125,7 @@
   </div>
 
   <script>
-    // RAW EXTRACTED DATA
+    // RAW EXTRACTED DATA (Original pure data)
     const rawExcelData = [
       { "chapter": "Haloalkanes and Haloarenes", "category": "Special Class", "title": "JEE 2027: Brainstorming Session on Haloalkanes and Haloarene", "classLink": "https://unacademy.com/class/jee-2027-brainstorming-session-on-haloalkanes-and-haloarene/G6H07UKD", "pdfLink": "", "status": "Not Started", "revision": "Pending", "notes": "", "id": 1 },
       { "chapter": "Haloalkanes and Haloarenes", "category": "Special Class", "title": "JEE 2027: HOTS Session on Haloalkanes and Haloarene (Part 1)", "classLink": "https://unacademy.com/class/jee-2027-hots-session-on-haloalkanes-and-haloarene/OFKRLPTC", "pdfLink": "", "status": "Not Started", "revision": "Pending", "notes": "", "id": 2 },
@@ -1206,6 +1205,7 @@
       updateGlobalStats();
     }
 
+    // Default tab ab All nahi, pehla chapter hoga, taaki gandi bheed na dikhe
     let activeTab = 'Haloalkanes and Haloarenes';
     let searchQuery = '';
 
@@ -1314,6 +1314,7 @@
             </div>
           `;
 
+          // NEW GRID CONTAINER
           const cardsGrid = document.createElement('div');
           cardsGrid.className = 'lecture-grid';
 
@@ -1328,6 +1329,7 @@
             card.className = `lecture-card ${isDone ? 'done' : ''}`;
             card.style.animationDelay = `${Math.min(cardCounter * 0.035, 0.6)}s`;
 
+            // NEW GRID CARD HTML
             card.innerHTML = `
               <div class="card-top">
                  <span class="cat-badge ${catClass}" style="font-size:0.65rem; border:none; padding:4px 8px; background:rgba(255,255,255,0.05); border-radius:8px;">
@@ -1606,25 +1608,47 @@
       animate();
     })();
 
-    // 100% Working Global JSONP Hits Tracker
-    window.handleGlobalCounter = function(response) {
-      if (response && response.value !== undefined) {
-        document.getElementById('globalVisitorCount').innerText = Number(response.value).toLocaleString();
-      }
-    };
-
-    (function initCounter() {
-      const script = document.createElement('script');
-      // Live counting endpoint: increments globally on every visit
-      script.src = 'https://api.countapi.xyz/hit/manav-organic-jee2027-official-tracker/visits?callback=handleGlobalCounter';
-      script.onerror = function() {
-        document.getElementById('globalVisitorCount').innerText = '1';
-      };
-      document.body.appendChild(script);
-    })();
-
     // Initial render
     renderTracker();
+  
+    /* =========================================================
+       GLOBAL SUPABASE VISITOR COUNTER
+       ========================================================= */
+    const SUPABASE_URL = 'https://virusbsumenrfqyaizen.supabase.co';
+    const SUPABASE_ANON_KEY = 'sb_publishable_r3YOCmowiY6Lz9YhQrtYYQ_vGhXDlrS';
+
+    async function registerGlobalVisitor() {
+      const counter = document.getElementById("global-view-count");
+      if (!counter) return;
+
+      try {
+        const response = await fetch(
+          `${SUPABASE_URL}/rest/v1/rpc/increment_site_views`,
+          {
+            method: "POST",
+            headers: {
+              "apikey": SUPABASE_ANON_KEY,
+              "Authorization": `Bearer ${SUPABASE_ANON_KEY}`,
+              "Content-Type": "application/json"
+            },
+            body: "{}"
+          }
+        );
+
+        if (!response.ok) {
+          throw new Error(`Supabase returned HTTP ${response.status}`);
+        }
+
+        const count = await response.json();
+        counter.textContent = Number(count).toLocaleString("en-IN");
+      } catch (error) {
+        console.error("Global visitor counter error:", error);
+        counter.textContent = "—";
+      }
+    }
+
+    registerGlobalVisitor();
+
   </script>
 </body>
 </html>
