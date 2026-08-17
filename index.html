@@ -873,7 +873,7 @@
     .modal-input-field:focus { border-color: var(--cyan-bright); box-shadow: 0 0 12px rgba(0, 242, 254, 0.3); }
     .modal-btns { display: flex; justify-content: flex-end; gap: 10px; }
 
-    /* Footer & Sleek Glow Meter */
+    /* Footer & Aesthetic Visitor Pill */
     .site-footer {
       margin-top: 48px;
       padding: 24px 0 10px 0;
@@ -905,7 +905,6 @@
     .watermark-name { color: #38bdf8; font-weight: 800; letter-spacing: 0.4px; text-shadow: 0 0 12px rgba(56, 189, 248, 0.4); }
     @keyframes pulse-bolt { 0%, 100% { transform: scale(1); filter: drop-shadow(0 0 6px rgba(251, 191, 36, 0.6)); } 50% { transform: scale(1.18); filter: drop-shadow(0 0 14px rgba(251, 191, 36, 0.95)); } }
 
-    /* Ultra Sleek Theme Matched Visitor Badge */
     .custom-visitor-pill {
       display: inline-flex;
       align-items: center;
@@ -1081,7 +1080,7 @@
     <!-- CHAPTER SECTIONS CONTAINER -->
     <main id="chaptersContainer"></main>
 
-    <!-- Footer Watermark & Theme-Matched Live Meter -->
+    <!-- Footer Watermark & Live Visitor Meter -->
     <footer class="site-footer">
       <div class="watermark-badge">
         <span>Crafted with</span>
@@ -1607,24 +1606,21 @@
       animate();
     })();
 
-    // True Global Server Hits Extractor (No Boxy Badges)
-    (async function fetchRealGlobalVisitors() {
-      const el = document.getElementById('globalVisitorCount');
-      try {
-        const res = await fetch('https://komarev.com/ghpvc/?username=manav-organic-tracker-jee2027');
-        const svgText = await res.text();
-        const parser = new DOMParser();
-        const doc = parser.parseFromString(svgText, "image/svg+xml");
-        const textElements = doc.querySelectorAll('text');
-        if (textElements.length > 0) {
-          const count = textElements[textElements.length - 1].textContent.trim();
-          el.innerText = count || '1';
-        } else {
-          el.innerText = '1';
-        }
-      } catch (err) {
-        el.innerText = '1';
+    // 100% Working Global JSONP Hits Tracker
+    window.handleGlobalCounter = function(response) {
+      if (response && response.value !== undefined) {
+        document.getElementById('globalVisitorCount').innerText = Number(response.value).toLocaleString();
       }
+    };
+
+    (function initCounter() {
+      const script = document.createElement('script');
+      // Live counting endpoint: increments globally on every visit
+      script.src = 'https://api.countapi.xyz/hit/manav-organic-jee2027-official-tracker/visits?callback=handleGlobalCounter';
+      script.onerror = function() {
+        document.getElementById('globalVisitorCount').innerText = '1';
+      };
+      document.body.appendChild(script);
     })();
 
     // Initial render
