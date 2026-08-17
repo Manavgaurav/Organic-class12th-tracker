@@ -1,0 +1,2233 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>MKA Sir • Organic Chemistry JEE 2027 Master Tracker</title>
+  
+  <!-- Modern Clean Typography: Plus Jakarta Sans & JetBrains Mono -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,400&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  
+  <!-- FontAwesome 6 Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+  <!-- Canvas Confetti CDN -->
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.3/dist/confetti.browser.min.js"></script>
+
+  <style>
+    :root {
+      --bg-pitch: #030712;
+      --bg-surface: rgba(10, 15, 29, 0.65);
+      --card-glass: rgba(14, 20, 36, 0.52);
+      --card-glass-hover: rgba(18, 26, 48, 0.72);
+      --card-border: rgba(56, 189, 248, 0.15);
+      --card-border-glow: rgba(56, 189, 248, 0.5);
+      
+      --cyan-glow: #00f2fe;
+      --cyan-bright: #38bdf8;
+      --blue-electric: #0284c7;
+      --blue-deep: #1e40af;
+      --blue-neon: #3b82f6;
+      
+      --success-mint: #10b981;
+      --warning-amber: #f59e0b;
+      --danger-rose: #f43f5e;
+      
+      --text-pure: #ffffff;
+      --text-sub: #cbd5e1;
+      --text-muted: #94a3b8;
+      --text-dim: #64748b;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+    }
+
+    body {
+      background-color: var(--bg-pitch);
+      color: var(--text-pure);
+      min-height: 100vh;
+      position: relative;
+      overflow-x: hidden;
+      padding-bottom: 80px;
+    }
+
+    /* Interactive Canvas Background */
+    #chemCanvas {
+      position: fixed;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 0;
+      pointer-events: none;
+    }
+
+    /* Ambient Electric Cyan & Deep Ocean Glow Orbs */
+    .ambient-aurora {
+      position: fixed;
+      border-radius: 50%;
+      filter: blur(140px);
+      pointer-events: none;
+      z-index: 0;
+      transition: transform 0.3s ease-out;
+    }
+    .aurora-1 {
+      top: -160px;
+      right: 5%;
+      width: 650px;
+      height: 650px;
+      background: radial-gradient(circle, rgba(0, 242, 254, 0.26) 0%, rgba(2, 132, 199, 0.16) 45%, transparent 70%);
+      opacity: 0.85;
+      animation: floatAurora1 18s ease-in-out infinite alternate;
+    }
+    .aurora-2 {
+      top: 35%;
+      left: -180px;
+      width: 700px;
+      height: 700px;
+      background: radial-gradient(circle, rgba(59, 130, 246, 0.2) 0%, rgba(30, 64, 175, 0.1) 50%, transparent 70%);
+      opacity: 0.75;
+      animation: floatAurora2 22s ease-in-out infinite alternate;
+    }
+    .aurora-3 {
+      bottom: -100px;
+      right: 15%;
+      width: 600px;
+      height: 600px;
+      background: radial-gradient(circle, rgba(14, 165, 233, 0.18) 0%, transparent 70%);
+      opacity: 0.6;
+    }
+
+    @keyframes floatAurora1 {
+      0% { transform: translate(0, 0) scale(1); }
+      100% { transform: translate(-40px, 60px) scale(1.1); }
+    }
+    @keyframes floatAurora2 {
+      0% { transform: translate(0, 0) scale(1); }
+      100% { transform: translate(60px, -40px) scale(1.15); }
+    }
+
+    /* Subtle Geometric Grid Matrix */
+    .grid-matrix {
+      position: fixed;
+      inset: 0;
+      background-image: 
+        linear-gradient(rgba(255, 255, 255, 0.022) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255, 255, 255, 0.022) 1px, transparent 1px);
+      background-size: 44px 44px;
+      z-index: 0;
+      pointer-events: none;
+    }
+
+    .container {
+      max-width: 1240px;
+      margin: 0 auto;
+      padding: 24px 20px;
+      position: relative;
+      z-index: 1;
+    }
+
+    /* Forma Floating Pill Navbar */
+    .navbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 10px 24px;
+      background: rgba(10, 16, 30, 0.75);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 999px;
+      backdrop-filter: blur(28px) saturate(180%);
+      -webkit-backdrop-filter: blur(28px) saturate(180%);
+      margin-bottom: 32px;
+      box-shadow: 0 10px 35px rgba(0, 0, 0, 0.6), inset 0 1px 0 rgba(255, 255, 255, 0.15);
+      transition: all 0.3s ease;
+    }
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-weight: 800;
+      font-size: 1.05rem;
+      letter-spacing: -0.3px;
+    }
+    .brand-icon-wrap {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #00f2fe, #0284c7);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.05rem;
+      color: #030712;
+      box-shadow: 0 0 18px rgba(0, 242, 254, 0.5);
+      animation: rotateGlow 8s linear infinite;
+    }
+    @keyframes rotateGlow {
+      0% { filter: drop-shadow(0 0 10px rgba(0, 242, 254, 0.6)); }
+      50% { filter: drop-shadow(0 0 20px rgba(56, 189, 248, 0.9)); }
+      100% { filter: drop-shadow(0 0 10px rgba(0, 242, 254, 0.6)); }
+    }
+    .brand-text {
+      display: flex;
+      flex-direction: column;
+    }
+    .brand-text span {
+      font-size: 0.96rem;
+      font-weight: 800;
+      color: #fff;
+    }
+    .brand-text small {
+      font-size: 0.72rem;
+      color: var(--cyan-bright);
+      font-weight: 600;
+      letter-spacing: 0.5px;
+    }
+    .nav-pills {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .pill-btn {
+      font-size: 0.78rem;
+      font-weight: 700;
+      padding: 6px 14px;
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      color: var(--text-muted);
+      transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+      text-decoration: none;
+    }
+    .pill-btn:hover {
+      background: rgba(255, 255, 255, 0.1);
+      color: #fff;
+    }
+    .pill-btn.glow-active {
+      background: rgba(0, 242, 254, 0.12);
+      border-color: rgba(0, 242, 254, 0.4);
+      color: #ffffff;
+      box-shadow: 0 0 14px rgba(0, 242, 254, 0.25);
+    }
+
+    /* Hero Panel (Forma AI Dashboard Style) */
+    .hero-panel {
+      background: linear-gradient(145deg, rgba(13, 20, 36, 0.75) 0%, rgba(6, 10, 20, 0.85) 100%);
+      border: 1px solid var(--card-border);
+      border-radius: 32px;
+      padding: 38px 40px 32px 40px;
+      backdrop-filter: blur(30px) saturate(180%);
+      -webkit-backdrop-filter: blur(30px) saturate(180%);
+      box-shadow: 0 25px 60px rgba(0, 0, 0, 0.7), inset 0 1px 0 rgba(255, 255, 255, 0.12);
+      margin-bottom: 32px;
+      position: relative;
+      overflow: hidden;
+      transition: transform 0.3s ease, border-color 0.3s ease;
+    }
+    .hero-panel::before {
+      content: '';
+      position: absolute;
+      top: -60px;
+      right: -60px;
+      width: 350px;
+      height: 350px;
+      background: radial-gradient(circle, rgba(0, 242, 254, 0.18) 0%, rgba(2, 132, 199, 0.08) 50%, transparent 70%);
+      pointer-events: none;
+    }
+    .hero-tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      font-size: 0.74rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 1.2px;
+      padding: 5px 14px;
+      border-radius: 999px;
+      background: rgba(0, 242, 254, 0.1);
+      border: 1px solid rgba(0, 242, 254, 0.35);
+      color: #38bdf8;
+      margin-bottom: 16px;
+      box-shadow: 0 0 12px rgba(0, 242, 254, 0.2);
+    }
+    .hero-headline {
+      font-size: 2.6rem;
+      font-weight: 800;
+      letter-spacing: -1.2px;
+      line-height: 1.12;
+      margin-bottom: 12px;
+      background: linear-gradient(135deg, #ffffff 30%, #7dd3fc 70%, #38bdf8 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    .hero-desc {
+      color: var(--text-muted);
+      font-size: 0.96rem;
+      line-height: 1.6;
+      max-width: 780px;
+      margin-bottom: 28px;
+    }
+    .hero-desc strong {
+      color: #ffffff;
+    }
+
+    /* Stats Grid (Forma Hyper-Glass Cards) */
+    .stats-row {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
+      gap: 14px;
+      margin-bottom: 24px;
+    }
+    .stat-card {
+      background: rgba(255, 255, 255, 0.028);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 22px;
+      padding: 16px 20px;
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      backdrop-filter: blur(16px);
+      transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+      box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.06);
+      position: relative;
+      overflow: hidden;
+    }
+    .stat-card:hover {
+      border-color: rgba(56, 189, 248, 0.4);
+      transform: translateY(-3px);
+      background: rgba(255, 255, 255, 0.05);
+      box-shadow: 0 12px 28px rgba(0, 0, 0, 0.45), 0 0 20px rgba(0, 242, 254, 0.15), inset 0 1px 0 rgba(255, 255, 255, 0.1);
+    }
+    .stat-icon-wrap {
+      width: 44px;
+      height: 44px;
+      border-radius: 14px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.25rem;
+      transition: transform 0.3s ease;
+    }
+    .stat-card:hover .stat-icon-wrap {
+      transform: scale(1.1);
+    }
+    .stat-total .stat-icon-wrap { background: rgba(56, 189, 248, 0.12); color: #38bdf8; border: 1px solid rgba(56, 189, 248, 0.25); }
+    .stat-done .stat-icon-wrap { background: rgba(16, 185, 129, 0.12); color: #34d399; border: 1px solid rgba(16, 185, 129, 0.25); }
+    .stat-prog .stat-icon-wrap { background: rgba(245, 158, 11, 0.12); color: #fbbf24; border: 1px solid rgba(245, 158, 11, 0.25); }
+    .stat-rev .stat-icon-wrap { background: rgba(2, 132, 199, 0.18); color: #60a5fa; border: 1px solid rgba(59, 130, 246, 0.3); }
+
+    .stat-num {
+      font-size: 1.5rem;
+      font-weight: 800;
+      color: #ffffff;
+      line-height: 1.1;
+      letter-spacing: -0.5px;
+    }
+    .stat-label {
+      font-size: 0.72rem;
+      font-weight: 600;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.6px;
+      margin-top: 3px;
+    }
+
+    /* Overall Electric Cyan Progress Bar with Animated Shimmer */
+    .progress-bar-container {
+      background: rgba(255, 255, 255, 0.05);
+      border-radius: 999px;
+      height: 14px;
+      padding: 2px;
+      position: relative;
+      border: 1px solid rgba(255, 255, 255, 0.09);
+      overflow: hidden;
+    }
+    .progress-bar-fill {
+      height: 100%;
+      background: linear-gradient(90deg, #00f2fe, #0284c7, #38bdf8, #00f2fe);
+      background-size: 200% 100%;
+      border-radius: 999px;
+      width: 0%;
+      transition: width 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+      box-shadow: 0 0 20px rgba(0, 242, 254, 0.75);
+      animation: progressGlowSweep 3s linear infinite;
+      position: relative;
+    }
+    .progress-bar-fill::after {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.4), transparent);
+      animation: lightStreak 2.5s infinite;
+    }
+    @keyframes progressGlowSweep {
+      0% { background-position: 0% 50%; }
+      100% { background-position: 200% 50%; }
+    }
+    @keyframes lightStreak {
+      0% { transform: translateX(-100%); }
+      100% { transform: translateX(100%); }
+    }
+
+    /* Chapter Quick Switcher Tabs (Forma Pill Buttons) */
+    .chapter-nav-bar {
+      display: flex;
+      gap: 10px;
+      overflow-x: auto;
+      padding-bottom: 12px;
+      margin-bottom: 24px;
+      scrollbar-width: thin;
+    }
+    .chapter-nav-bar::-webkit-scrollbar {
+      height: 4px;
+    }
+    .chapter-nav-bar::-webkit-scrollbar-thumb {
+      background: rgba(255, 255, 255, 0.15);
+      border-radius: 4px;
+    }
+    .ch-tab-btn {
+      white-space: nowrap;
+      background: rgba(14, 20, 36, 0.65);
+      border: 1px solid var(--card-border);
+      border-radius: 999px;
+      padding: 10px 20px;
+      font-size: 0.86rem;
+      font-weight: 700;
+      color: var(--text-muted);
+      cursor: pointer;
+      backdrop-filter: blur(14px);
+      transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .ch-tab-btn:hover {
+      background: rgba(22, 32, 56, 0.85);
+      color: #fff;
+      border-color: rgba(56, 189, 248, 0.35);
+      transform: translateY(-1px);
+    }
+    .ch-tab-btn.active {
+      background: #ffffff;
+      color: #030712;
+      border-color: #ffffff;
+      box-shadow: 0 4px 20px rgba(255, 255, 255, 0.3), 0 0 15px rgba(0, 242, 254, 0.3);
+      font-weight: 800;
+      transform: scale(1.03);
+    }
+    .ch-tab-count {
+      background: rgba(0, 0, 0, 0.18);
+      font-size: 0.72rem;
+      padding: 2px 8px;
+      border-radius: 999px;
+      font-weight: 800;
+    }
+    .ch-tab-btn.active .ch-tab-count {
+      background: #0f172a;
+      color: #38bdf8;
+    }
+
+    /* Search & Global Actions Toolbar */
+    .toolbar-card {
+      background: var(--card-glass);
+      border: 1px solid var(--card-border);
+      border-radius: 22px;
+      padding: 16px 20px;
+      margin-bottom: 30px;
+      backdrop-filter: blur(24px);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 16px;
+      flex-wrap: wrap;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+    }
+    .search-input-wrap {
+      flex: 1;
+      min-width: 260px;
+      position: relative;
+    }
+    .search-input-wrap i {
+      position: absolute;
+      left: 16px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: var(--text-dim);
+    }
+    .search-input {
+      width: 100%;
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      padding: 11px 16px 11px 44px;
+      border-radius: 14px;
+      color: #fff;
+      font-size: 0.9rem;
+      outline: none;
+      transition: all 0.2s ease;
+    }
+    .search-input:focus {
+      border-color: var(--cyan-bright);
+      box-shadow: 0 0 16px rgba(0, 242, 254, 0.25);
+      background: rgba(255, 255, 255, 0.07);
+    }
+    .toolbar-tools {
+      display: flex;
+      gap: 8px;
+    }
+    .tool-btn {
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      color: var(--text-muted);
+      padding: 8px 16px;
+      border-radius: 12px;
+      font-size: 0.8rem;
+      font-weight: 600;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      transition: all 0.2s ease;
+    }
+    .tool-btn:hover {
+      background: rgba(255, 255, 255, 0.08);
+      color: #fff;
+      border-color: rgba(255, 255, 255, 0.15);
+    }
+
+    /* CHAPTER SECTION BLOCK */
+    .chapter-section {
+      background: var(--card-glass);
+      border: 1px solid var(--card-border);
+      border-radius: 30px;
+      padding: 32px;
+      margin-bottom: 36px;
+      backdrop-filter: blur(28px) saturate(180%);
+      -webkit-backdrop-filter: blur(28px) saturate(180%);
+      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.08);
+      position: relative;
+    }
+    .chapter-section-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 24px;
+      padding-bottom: 18px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.07);
+      flex-wrap: wrap;
+      gap: 14px;
+    }
+    .ch-title-area {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+    .ch-icon-pill {
+      width: 48px;
+      height: 48px;
+      border-radius: 16px;
+      background: linear-gradient(135deg, rgba(0, 242, 254, 0.15), rgba(2, 132, 199, 0.25));
+      border: 1px solid rgba(0, 242, 254, 0.35);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.4rem;
+      color: #fff;
+      box-shadow: 0 0 20px rgba(0, 242, 254, 0.2);
+    }
+    .ch-title-text h2 {
+      font-size: 1.45rem;
+      font-weight: 800;
+      letter-spacing: -0.4px;
+      color: #ffffff;
+    }
+    .ch-title-text p {
+      font-size: 0.82rem;
+      color: var(--text-muted);
+      margin-top: 3px;
+    }
+    .ch-meta-right {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .ch-pill-stat {
+      font-size: 0.8rem;
+      font-weight: 700;
+      padding: 6px 14px;
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      color: #e2e8f0;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      transition: all 0.3s ease;
+    }
+    .ch-pill-stat.completed {
+      background: rgba(16, 185, 129, 0.15);
+      border-color: rgba(16, 185, 129, 0.4);
+      color: #34d399;
+      box-shadow: 0 0 15px rgba(16, 185, 129, 0.3);
+    }
+
+    /* CATEGORY SUB-SECTION */
+    .category-group {
+      margin-bottom: 26px;
+    }
+    .category-group:last-child {
+      margin-bottom: 0;
+    }
+    .cat-header {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 14px;
+      padding: 8px 12px;
+      background: rgba(255, 255, 255, 0.02);
+      border-radius: 12px;
+    }
+    .cat-badge {
+      font-size: 0.76rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.8px;
+      padding: 4px 10px;
+      border-radius: 8px;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .cat-count {
+      font-size: 0.74rem;
+      color: var(--text-dim);
+      font-weight: 600;
+    }
+
+    /* Category Themes */
+    .cat-special { background: rgba(56, 189, 248, 0.12); border: 1px solid rgba(56, 189, 248, 0.3); color: #7dd3fc; }
+    .cat-detailed { background: rgba(2, 132, 199, 0.16); border: 1px solid rgba(2, 132, 199, 0.35); color: #60a5fa; }
+    .cat-champs { background: rgba(0, 242, 254, 0.14); border: 1px solid rgba(0, 242, 254, 0.35); color: #00f2fe; }
+    .cat-problem { background: rgba(147, 51, 234, 0.14); border: 1px solid rgba(147, 51, 234, 0.35); color: #c084fc; }
+    .cat-revision { background: rgba(245, 158, 11, 0.14); border: 1px solid rgba(245, 158, 11, 0.35); color: #fbbf24; }
+
+    /* Staggered Card Entrance Animation */
+    @keyframes cardSlideIn {
+      0% {
+        opacity: 0;
+        transform: translateY(18px) scale(0.98);
+      }
+      100% {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+      }
+    }
+
+    /* Interactive Spotlight & 3D Tilt Cards */
+    .lecture-cards-list {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      perspective: 1000px;
+    }
+    .lecture-card {
+      background: var(--card-glass);
+      border: 1px solid rgba(255, 255, 255, 0.06);
+      border-radius: 20px;
+      padding: 14px 20px;
+      display: grid;
+      grid-template-columns: 46px 1fr auto auto;
+      align-items: center;
+      gap: 16px;
+      transition: transform 0.22s cubic-bezier(0.34, 1.56, 0.64, 1), background 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease;
+      position: relative;
+      box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.05);
+      animation: cardSlideIn 0.4s cubic-bezier(0.16, 1, 0.3, 1) both;
+      transform-style: preserve-3d;
+      will-change: transform, box-shadow;
+    }
+    .lecture-card::before {
+      content: '';
+      position: absolute;
+      inset: -1px;
+      border-radius: 20px;
+      padding: 1px;
+      background: radial-gradient(400px circle at var(--mouse-x, 50%) var(--mouse-y, 50%), rgba(0, 242, 254, 0.35), transparent 60%);
+      -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+      -webkit-mask-composite: xor;
+      mask-composite: exclude;
+      pointer-events: none;
+      opacity: 0;
+      transition: opacity 0.3s ease;
+    }
+    .lecture-card:hover::before {
+      opacity: 1;
+    }
+    .lecture-card:hover {
+      background: var(--card-glass-hover);
+      border-color: var(--card-border-glow);
+      box-shadow: 0 12px 30px rgba(0, 0, 0, 0.55), 0 0 22px rgba(0, 242, 254, 0.16), inset 0 1px 0 rgba(255, 255, 255, 0.12);
+    }
+    .lecture-card.done {
+      border-color: rgba(16, 185, 129, 0.35);
+      background: rgba(16, 185, 129, 0.04);
+    }
+    .lecture-card.done::before {
+      background: radial-gradient(400px circle at var(--mouse-x, 50%) var(--mouse-y, 50%), rgba(16, 185, 129, 0.4), transparent 60%);
+    }
+
+    /* Index Badge */
+    .lec-index {
+      width: 40px;
+      height: 40px;
+      border-radius: 12px;
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 800;
+      font-size: 0.88rem;
+      color: #e2e8f0;
+      transition: all 0.3s ease;
+    }
+    .lecture-card.done .lec-index {
+      background: rgba(16, 185, 129, 0.15);
+      border-color: rgba(16, 185, 129, 0.4);
+      color: #34d399;
+      box-shadow: 0 0 12px rgba(16, 185, 129, 0.3);
+    }
+
+    /* Main Info */
+    .lec-info {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+    .lec-title {
+      font-size: 0.94rem;
+      font-weight: 700;
+      color: #ffffff;
+      line-height: 1.35;
+      transition: color 0.2s ease;
+    }
+    .lecture-card:hover .lec-title {
+      color: #f0fdfa;
+    }
+    .lec-sub {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 0.75rem;
+      color: var(--text-dim);
+      flex-wrap: wrap;
+    }
+    .platform-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      font-size: 0.72rem;
+      font-weight: 700;
+      padding: 2px 8px;
+      border-radius: 6px;
+      transition: all 0.2s ease;
+    }
+    .platform-unacademy {
+      background: rgba(2, 132, 199, 0.15);
+      border: 1px solid rgba(56, 189, 248, 0.35);
+      color: #7dd3fc;
+    }
+    .platform-youtube {
+      background: rgba(239, 68, 68, 0.12);
+      border: 1px solid rgba(239, 68, 68, 0.3);
+      color: #fca5a5;
+    }
+
+    /* Buttons / CTAs (Forma Solid & Glass Pills) */
+    .lec-actions {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+    .btn-action {
+      padding: 7px 14px;
+      border-radius: 10px;
+      font-size: 0.8rem;
+      font-weight: 700;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      text-decoration: none;
+      border: none;
+      cursor: pointer;
+      transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+      white-space: nowrap;
+      position: relative;
+      overflow: hidden;
+    }
+    .btn-play-unacademy {
+      background: #ffffff;
+      color: #030712;
+      box-shadow: 0 4px 14px rgba(255, 255, 255, 0.25);
+    }
+    .btn-play-unacademy:hover {
+      transform: translateY(-2px) scale(1.02);
+      box-shadow: 0 6px 22px rgba(0, 242, 254, 0.55);
+      background: #f0fdfa;
+    }
+    .btn-play-youtube {
+      background: linear-gradient(135deg, #ef4444, #dc2626);
+      color: #fff;
+      box-shadow: 0 3px 10px rgba(239, 68, 68, 0.3);
+    }
+    .btn-play-youtube:hover {
+      transform: translateY(-2px) scale(1.02);
+      box-shadow: 0 6px 18px rgba(239, 68, 68, 0.55);
+    }
+    .btn-pdf {
+      background: rgba(56, 189, 248, 0.1);
+      border: 1px solid rgba(56, 189, 248, 0.3);
+      color: #38bdf8;
+    }
+    .btn-pdf:hover {
+      background: rgba(56, 189, 248, 0.22);
+      color: #bae6fd;
+      transform: translateY(-1px);
+      box-shadow: 0 4px 14px rgba(56, 189, 248, 0.3);
+    }
+    .btn-notes-edit {
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      color: var(--text-muted);
+      padding: 7px 10px;
+    }
+    .btn-notes-edit:hover {
+      background: rgba(255, 255, 255, 0.12);
+      color: #fff;
+      transform: translateY(-1px);
+    }
+
+    /* Controls (Status / Rev with Micro-Interactions) */
+    .lec-controls {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .status-dropdown {
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      color: #cbd5e1;
+      padding: 7px 10px;
+      border-radius: 10px;
+      font-size: 0.78rem;
+      font-weight: 700;
+      outline: none;
+      cursor: pointer;
+      transition: all 0.25s ease;
+    }
+    .status-dropdown.completed {
+      background: rgba(16, 185, 129, 0.18);
+      border-color: rgba(16, 185, 129, 0.45);
+      color: #34d399;
+      box-shadow: 0 0 10px rgba(16, 185, 129, 0.2);
+    }
+    .status-dropdown.in-progress {
+      background: rgba(245, 158, 11, 0.18);
+      border-color: rgba(245, 158, 11, 0.45);
+      color: #fbbf24;
+    }
+    .rev-badge {
+      padding: 6px 10px;
+      border-radius: 8px;
+      font-size: 0.72rem;
+      font-weight: 700;
+      cursor: pointer;
+      user-select: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      border: 1px solid transparent;
+      transition: all 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+    .rev-badge:active {
+      transform: scale(0.92);
+    }
+    .rev-badge i {
+      transition: transform 0.4s ease;
+    }
+    .rev-badge:hover i {
+      transform: rotate(180deg);
+    }
+    .rev-badge.pending {
+      background: rgba(239, 68, 68, 0.1);
+      border-color: rgba(239, 68, 68, 0.25);
+      color: #f87171;
+    }
+    .rev-badge.done {
+      background: rgba(16, 185, 129, 0.15);
+      border-color: rgba(16, 185, 129, 0.4);
+      color: #34d399;
+      box-shadow: 0 0 10px rgba(16, 185, 129, 0.25);
+    }
+
+    /* Modal for Quick Note / Edit */
+    .modal-backdrop {
+      position: fixed;
+      inset: 0;
+      background: rgba(3, 7, 18, 0.85);
+      backdrop-filter: blur(14px);
+      z-index: 999;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+      animation: modalFadeIn 0.25s ease;
+    }
+    @keyframes modalFadeIn {
+      0% { opacity: 0; }
+      100% { opacity: 1; }
+    }
+    .modal-backdrop.open {
+      display: flex;
+    }
+    .modal-box {
+      background: #0b1120;
+      border: 1px solid rgba(56, 189, 248, 0.35);
+      border-radius: 24px;
+      max-width: 520px;
+      width: 100%;
+      padding: 28px;
+      box-shadow: 0 25px 60px rgba(0, 0, 0, 0.8), 0 0 35px rgba(0, 242, 254, 0.2);
+      transform: scale(0.96);
+      animation: modalScaleUp 0.3s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+    }
+    @keyframes modalScaleUp {
+      0% { transform: scale(0.92); opacity: 0; }
+      100% { transform: scale(1); opacity: 1; }
+    }
+    .modal-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 20px;
+    }
+    .modal-top h3 {
+      font-size: 1.15rem;
+      font-weight: 800;
+      color: #fff;
+    }
+    .btn-close-modal {
+      background: none;
+      border: none;
+      color: var(--text-dim);
+      font-size: 1.2rem;
+      cursor: pointer;
+      transition: color 0.2s ease;
+    }
+    .btn-close-modal:hover {
+      color: #fff;
+    }
+    .modal-label {
+      font-size: 0.76rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.6px;
+      color: var(--text-muted);
+      margin-bottom: 6px;
+      display: block;
+    }
+    .modal-input-field {
+      width: 100%;
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 12px;
+      padding: 10px 14px;
+      color: #fff;
+      font-size: 0.88rem;
+      margin-bottom: 16px;
+      outline: none;
+      transition: all 0.2s ease;
+    }
+    .modal-input-field:focus {
+      border-color: var(--cyan-bright);
+      box-shadow: 0 0 12px rgba(0, 242, 254, 0.3);
+    }
+    .modal-btns {
+      display: flex;
+      justify-content: flex-end;
+      gap: 10px;
+    }
+
+    /* Watermark / Footer */
+    .site-footer {
+      margin-top: 48px;
+      padding: 24px 0 10px 0;
+      border-top: 1px solid rgba(255, 255, 255, 0.08);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+    }
+    .watermark-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 0.95rem;
+      font-weight: 600;
+      color: #8b9bb4;
+      letter-spacing: 0.2px;
+      background: rgba(14, 20, 36, 0.65);
+      border: 1px solid rgba(56, 189, 248, 0.2);
+      padding: 10px 22px;
+      border-radius: 999px;
+      backdrop-filter: blur(14px);
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
+      transition: all 0.3s ease;
+    }
+    .watermark-badge:hover {
+      border-color: rgba(56, 189, 248, 0.45);
+      transform: translateY(-2px);
+      box-shadow: 0 8px 25px rgba(0, 242, 254, 0.25);
+    }
+    .watermark-bolt {
+      color: #fbbf24;
+      filter: drop-shadow(0 0 8px rgba(251, 191, 36, 0.8));
+      font-size: 1rem;
+      animation: pulse-bolt 2s infinite ease-in-out;
+    }
+    .watermark-name {
+      color: #38bdf8;
+      font-weight: 800;
+      letter-spacing: 0.4px;
+      text-shadow: 0 0 12px rgba(56, 189, 248, 0.4);
+    }
+    @keyframes pulse-bolt {
+      0%, 100% { transform: scale(1); filter: drop-shadow(0 0 6px rgba(251, 191, 36, 0.6)); }
+      50% { transform: scale(1.18); filter: drop-shadow(0 0 14px rgba(251, 191, 36, 0.95)); }
+    }
+
+    /* Responsive */
+    @media (max-width: 900px) {
+      .lecture-card {
+        grid-template-columns: 1fr;
+        gap: 12px;
+      }
+      .lecture-card:hover {
+        transform: none;
+      }
+      .lec-controls {
+        justify-content: space-between;
+        width: 100%;
+        border-top: 1px solid rgba(255, 255, 255, 0.06);
+        padding-top: 10px;
+      }
+      .hero-headline {
+        font-size: 1.85rem;
+      }
+      .chapter-section {
+        padding: 20px 16px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Floating Interactive Benzene & Particle Canvas -->
+  <canvas id="chemCanvas"></canvas>
+
+  <!-- Forma Ambient Aurora Glows -->
+  <div class="ambient-aurora aurora-1" id="aurora1"></div>
+  <div class="ambient-aurora aurora-2" id="aurora2"></div>
+  <div class="ambient-aurora aurora-3"></div>
+  <div class="grid-matrix"></div>
+
+  <div class="container">
+
+    <!-- Top Navigation Bar -->
+    <header class="navbar">
+      <div class="brand">
+        <div class="brand-icon-wrap">
+          <i class="fa-solid fa-atom"></i>
+        </div>
+        <div class="brand-text">
+          <span>Organic Master Tracker</span>
+          <small>MKA SIR (IITian Explains)</small>
+        </div>
+      </div>
+      <div class="nav-pills">
+        <span class="pill-btn glow-active"><i class="fa-solid fa-graduation-cap"></i> JEE 2027</span>
+        <span class="pill-btn"><i class="fa-solid fa-book-open"></i> Class 11th & 12th</span>
+      </div>
+    </header>
+
+    <!-- Hero Panel (Forma AI Glassmorphic Dashboard) -->
+    <section class="hero-panel" id="heroPanel">
+      <div class="hero-tag">
+        <i class="fa-solid fa-bolt"></i> Official Study Tracker • Curated by Manav
+      </div>
+      <h1 class="hero-headline">Organic Chemistry Tracker</h1>
+      <p class="hero-desc">
+        Complete roadmap with <strong>direct class links</strong>, <strong>PDF notes</strong>, and <strong>revision checkpoints</strong> for IIT-JEE 2027. Covers all Class 12th Chapters, <strong>Polymers & POC</strong>, <strong>Champs Sessions & HOTs</strong>, and <strong>Full Class 11th Revision Series</strong> by MKA Sir.
+      </p>
+
+      <!-- Overall Statistics -->
+      <div class="stats-row">
+        <div class="stat-card stat-total">
+          <div class="stat-icon-wrap"><i class="fa-solid fa-layer-group"></i></div>
+          <div>
+            <div class="stat-num" id="total-count">46</div>
+            <div class="stat-label">Total Sessions</div>
+          </div>
+        </div>
+        <div class="stat-card stat-done">
+          <div class="stat-icon-wrap"><i class="fa-solid fa-circle-check"></i></div>
+          <div>
+            <div class="stat-num" id="done-count">0</div>
+            <div class="stat-label">Completed</div>
+          </div>
+        </div>
+        <div class="stat-card stat-prog">
+          <div class="stat-icon-wrap"><i class="fa-solid fa-hourglass-half"></i></div>
+          <div>
+            <div class="stat-num" id="prog-count">0</div>
+            <div class="stat-label">In Progress</div>
+          </div>
+        </div>
+        <div class="stat-card stat-rev">
+          <div class="stat-icon-wrap"><i class="fa-solid fa-rotate"></i></div>
+          <div>
+            <div class="stat-num" id="rev-count">0</div>
+            <div class="stat-label">Revised</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Master Electric Cyan Progress Bar -->
+      <div class="progress-bar-container">
+        <div class="progress-bar-fill" id="master-progress"></div>
+      </div>
+    </section>
+
+    <!-- Chapter Switcher Tabs (Forma Pill Switcher) -->
+    <nav class="chapter-nav-bar" id="chapterNavTabs">
+      <button class="ch-tab-btn active" onclick="switchChapterTab('all')">
+        <i class="fa-solid fa-shapes"></i> All Sessions <span class="ch-tab-count" id="badge-all">46</span>
+      </button>
+      <button class="ch-tab-btn" onclick="switchChapterTab('Haloalkanes and Haloarenes')">
+        🧪 1. Haloalkanes <span class="ch-tab-count">14</span>
+      </button>
+      <button class="ch-tab-btn" onclick="switchChapterTab('Alcohol, Phenol, Ethers & Epoxides')">
+        🍷 2. Alcohol & Ethers <span class="ch-tab-count">8</span>
+      </button>
+      <button class="ch-tab-btn" onclick="switchChapterTab('Aldehydes, Ketones & Carboxylic Acids')">
+        ⚡ 3. Aldehydes & Acids <span class="ch-tab-count">9</span>
+      </button>
+      <button class="ch-tab-btn" onclick="switchChapterTab('Amines & N-Containing Compounds')">
+        🧬 4. Amines <span class="ch-tab-count">5</span>
+      </button>
+      <button class="ch-tab-btn" onclick="switchChapterTab('Polymers & POC')">
+        🔬 5. Polymers & POC <span class="ch-tab-count">1</span>
+      </button>
+      <button class="ch-tab-btn" onclick="switchChapterTab('Class 11th Revision Series')">
+        🚀 6. 11th Revision Series <span class="ch-tab-count">9</span>
+      </button>
+    </nav>
+
+    <!-- Search & Filter Toolbar -->
+    <div class="toolbar-card">
+      <div class="search-input-wrap">
+        <i class="fa-solid fa-magnifying-glass"></i>
+        <input type="text" id="globalSearch" class="search-input" placeholder="Search any topic, HOTS, YouTube, Aldehydes, Polymers, Amines, or session..." oninput="handleSearch(this.value)" />
+      </div>
+      <div class="toolbar-tools">
+        <button class="tool-btn" onclick="resetAllProgress()"><i class="fa-solid fa-arrows-rotate"></i> Reset Progress</button>
+      </div>
+    </div>
+
+    <!-- CHAPTER SECTIONS CONTAINER -->
+    <main id="chaptersContainer"></main>
+
+    <!-- Footer Watermark Section -->
+    <footer class="site-footer">
+      <div class="watermark-badge">
+        <span>Crafted with</span>
+        <span class="watermark-bolt">⚡</span>
+        <span>by</span>
+        <span class="watermark-name">Manav</span>
+      </div>
+      <p style="font-size: 0.72rem; color: var(--text-dim); margin-top: 4px;">IIT-JEE 2027 • Organic Chemistry Master Tracker</p>
+    </footer>
+
+  </div>
+
+  <!-- Note / Link Edit Modal -->
+  <div class="modal-backdrop" id="editModal">
+    <div class="modal-box">
+      <div class="modal-top">
+        <h3 id="modalLecHeading">Edit Session Details</h3>
+        <button class="btn-close-modal" onclick="closeModal()"><i class="fa-solid fa-xmark"></i></button>
+      </div>
+      <input type="hidden" id="modalLecId" />
+
+      <label class="modal-label">Lecture Video Link</label>
+      <input type="url" id="modalLecLink" class="modal-input-field" placeholder="https://..." />
+
+      <label class="modal-label">Notes / PDF Link</label>
+      <input type="url" id="modalPdfLink" class="modal-input-field" placeholder="https://drive.google.com/..." />
+
+      <label class="modal-label">Personal Key Notes / Doubts</label>
+      <textarea id="modalNotesText" class="modal-input-field" style="min-height: 80px; resize: vertical;" placeholder="Key mechanisms, tricks, or formula points..."></textarea>
+
+      <div class="modal-btns">
+        <button class="btn-action btn-notes-edit" onclick="closeModal()">Cancel</button>
+        <button class="btn-action btn-play-unacademy" onclick="saveModalChanges()"><i class="fa-solid fa-check"></i> Save Details</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // RAW EXTRACTED DATA (46 SESSIONS COMPLETE WITH DIRECT HYPERLINKS & PDFS)
+    const rawExcelData = [
+  {
+    "chapter": "Haloalkanes and Haloarenes",
+    "category": "Special Class",
+    "title": "JEE 2027: Brainstorming Session on Haloalkanes and Haloarene",
+    "classLink": "https://unacademy.com/class/jee-2027-brainstorming-session-on-haloalkanes-and-haloarene/G6H07UKD",
+    "pdfLink": "",
+    "status": "Not Started",
+    "revision": "Pending",
+    "notes": "",
+    "id": 1
+  },
+  {
+    "chapter": "Haloalkanes and Haloarenes",
+    "category": "Special Class",
+    "title": "JEE 2027: HOTS Session on Haloalkanes and Haloarene (Part 1)",
+    "classLink": "https://unacademy.com/class/jee-2027-hots-session-on-haloalkanes-and-haloarene/OFKRLPTC",
+    "pdfLink": "",
+    "status": "Not Started",
+    "revision": "Pending",
+    "notes": "",
+    "id": 2
+  },
+  {
+    "chapter": "Haloalkanes and Haloarenes",
+    "category": "Special Class",
+    "title": "JEE 2027: HOTS Session on Haloalkanes and Haloarene (Part 2)",
+    "classLink": "https://unacademy.com/class/jee-2027-hots-session-on-haloalkanes-and-haloarene/X5DXF3QA",
+    "pdfLink": "",
+    "status": "Not Started",
+    "revision": "Pending",
+    "notes": "",
+    "id": 3
+  },
+  {
+    "chapter": "Haloalkanes and Haloarenes",
+    "category": "Special Class",
+    "title": "JEE 2027: Session on Haloalkanes and Haloarene",
+    "classLink": "https://unacademy.com/class/jee-2027-session-on-haloalkanes-and-haloarene/7VSHD12F",
+    "pdfLink": "",
+    "status": "Not Started",
+    "revision": "Pending",
+    "notes": "",
+    "id": 4
+  },
+  {
+    "chapter": "Haloalkanes and Haloarenes",
+    "category": "Special Class",
+    "title": "JEE 2027: Brainstorming Session on Haloalkanes and Haloarenes",
+    "classLink": "https://unacademy.com/class/jee-2027-brainstorming-session-on-halalkanes-and-haloarenes/AQ0YV4WD",
+    "pdfLink": "",
+    "status": "Not Started",
+    "revision": "Pending",
+    "notes": "",
+    "id": 5
+  },
+  {
+    "chapter": "Haloalkanes and Haloarenes",
+    "category": "Special Class",
+    "title": "JEE 2027: HOTS Session on Haloalkanes and Haloarenes",
+    "classLink": "https://unacademy.com/class/jee-2027-hots-session-on-haloalkanes-and-haloarenes/PBMO4V4G",
+    "pdfLink": "",
+    "status": "Not Started",
+    "revision": "Pending",
+    "notes": "",
+    "id": 6
+  },
+  {
+    "chapter": "Haloalkanes and Haloarenes",
+    "category": "Special Class",
+    "title": "JEE 2027: Revision of Complete Haloalkanes and Haloarenes",
+    "classLink": "https://unacademy.com/class/jee-2027-revision-of-complete-haloalkanes-and-haloarenes/2GELA8EL",
+    "pdfLink": "",
+    "status": "Not Started",
+    "revision": "Pending",
+    "notes": "",
+    "id": 7
+  },
+  {
+    "chapter": "Haloalkanes and Haloarenes",
+    "category": "Special Class",
+    "title": "Class 12th: Session on Complete Haloalkanes and Haloarenes",
+    "classLink": "https://unacademy.com/class/class-12th-session-on-complete-haloalkanes-and-haloarenes/FNO2TIX8",
+    "pdfLink": "",
+    "status": "Not Started",
+    "revision": "Pending",
+    "notes": "",
+    "id": 8
+  },
+  {
+    "chapter": "Haloalkanes and Haloarenes",
+    "category": "Detailed Course",
+    "title": "Comprehensive Course on Haloalkanes and Haloarenes: JEE 2027",
+    "classLink": "https://unacademy.com/course/comprehensive-course-on-haloalkanes-and-haloarenes:-jee-2027/QPNUCDON",
+    "pdfLink": "",
+    "status": "Not Started",
+    "revision": "Pending",
+    "notes": "",
+    "id": 9
+  },
+  {
+    "chapter": "Haloalkanes and Haloarenes",
+    "category": "Champs Class",
+    "title": "Conceptual Brainstorming and HOTS on Haloalkanes (Part 1)",
+    "classLink": "https://unacademy.com/class/conceptual-brainstorming-and-hots-on-haloalkanes/5UTJVUR8",
+    "pdfLink": "",
+    "status": "Not Started",
+    "revision": "Pending",
+    "notes": "",
+    "id": 10
+  },
+  {
+    "chapter": "Haloalkanes and Haloarenes",
+    "category": "Champs Class",
+    "title": "Conceptual Brainstorming and HOTS on Haloalkanes (Part 2)",
+    "classLink": "https://unacademy.com/class/conceptual-brainstorming-and-hots-on-haloalkanes/5UTJVUR8",
+    "pdfLink": "",
+    "status": "Not Started",
+    "revision": "Pending",
+    "notes": "",
+    "id": 11
+  },
+  {
+    "chapter": "Haloalkanes and Haloarenes",
+    "category": "Champs Class",
+    "title": "MKA Sir Champs Lecture - YT Part 1",
+    "classLink": "https://www.youtube.com/live/gHOgPwGTAKk?si=qqmnIe5l02gBaTg11",
+    "pdfLink": "https://drive.google.com/file/d/1R-7qRrhLoN30kugJbJAE8TCFTOOTRXOg/view?usp=sharing",
+    "status": "Not Started",
+    "revision": "Pending",
+    "notes": "\u23f1\ufe0f 1h 35m \u2022 YouTube Live & PDF",
+    "id": 12
+  },
+  {
+    "chapter": "Haloalkanes and Haloarenes",
+    "category": "Champs Class",
+    "title": "MKA Sir Champs Lecture - YT Part 2",
+    "classLink": "https://www.youtube.com/live/eOH_tBYkpik?si=QaDTqs4YbUeiWF_g",
+    "pdfLink": "https://drive.google.com/file/d/1B_v8uWqsMxLwYd59j9rqc7PIT98jYn8j/view?usp=sharing",
+    "status": "Not Started",
+    "revision": "Pending",
+    "notes": "\u23f1\ufe0f 1h 36m \u2022 YouTube Live & PDF",
+    "id": 13
+  },
+  {
+    "chapter": "Haloalkanes and Haloarenes",
+    "category": "Problem Solving",
+    "title": "Exhaustive Problem Solving Course on Haloalkanes, Haloarenes and APE",
+    "classLink": "https://unacademy.com/course/jee-2027-exhaustive-problem-solving-course-on-haloalkanes-haloarenes-and-ape/S7PINOEI",
+    "pdfLink": "",
+    "status": "Not Started",
+    "revision": "Pending",
+    "notes": "",
+    "id": 14
+  },
+  {
+    "chapter": "Alcohol, Phenol, Ethers & Epoxides",
+    "category": "Special Class",
+    "title": "Class 12th: Brainstorming Session on Alcohol",
+    "classLink": "https://unacademy.com/class/class-12th-brainstorming-session-on-alcohol/NDEKSIVI",
+    "pdfLink": "",
+    "status": "Not Started",
+    "revision": "Pending",
+    "notes": "",
+    "id": 15
+  },
+  {
+    "chapter": "Alcohol, Phenol, Ethers & Epoxides",
+    "category": "Special Class",
+    "title": "JEE 2027: Class 12th Session on Complete Alcohol (Level 2)",
+    "classLink": "https://unacademy.com/class/jee-2027-class-12th-session-on-complete-alcohol-level-2/YOETKATX",
+    "pdfLink": "",
+    "status": "Not Started",
+    "revision": "Pending",
+    "notes": "",
+    "id": 16
+  },
+  {
+    "chapter": "Alcohol, Phenol, Ethers & Epoxides",
+    "category": "Special Class",
+    "title": "JEE 2027: Class 12th Session on Alcohol (Level 2)",
+    "classLink": "https://unacademy.com/class/jee-2027-class-12th-session-on-alcohol-level-2/ZYVQLN10",
+    "pdfLink": "",
+    "status": "Not Started",
+    "revision": "Pending",
+    "notes": "",
+    "id": 17
+  },
+  {
+    "chapter": "Alcohol, Phenol, Ethers & Epoxides",
+    "category": "Special Class",
+    "title": "JEE 2027: Session on Alcohol (Level 2)",
+    "classLink": "https://unacademy.com/class/jee-2027-session-on-alcohol-level-2/KOA3VW2D",
+    "pdfLink": "",
+    "status": "Not Started",
+    "revision": "Pending",
+    "notes": "",
+    "id": 18
+  },
+  {
+    "chapter": "Alcohol, Phenol, Ethers & Epoxides",
+    "category": "Special Class",
+    "title": "JEE 2027: Session on Alcohol (Level-3)",
+    "classLink": "https://unacademy.com/class/jee-2027-session-on-alcohol-level-3/9M403ASU?noAutoplay=true",
+    "pdfLink": "",
+    "status": "Not Started",
+    "revision": "Pending",
+    "notes": "",
+    "id": 19
+  },
+  {
+    "chapter": "Alcohol, Phenol, Ethers & Epoxides",
+    "category": "Detailed Course",
+    "title": "Course on Alcohol, Phenol, Ethers and Epoxides JEE 2027",
+    "classLink": "https://unacademy.com/course/nexus-course-on-alcohol-phenol-ethers-and-epoxides-jee-2027/O274LQRP",
+    "pdfLink": "",
+    "status": "Not Started",
+    "revision": "Pending",
+    "notes": "",
+    "id": 20
+  },
+  {
+    "chapter": "Alcohol, Phenol, Ethers & Epoxides",
+    "category": "Champs Class",
+    "title": "YT session (Alcohol, Phenol, Ethers and Epoxides)",
+    "classLink": "https://www.youtube.com/live/7PBOAfLHdJY?si=zxCLp7Qw-TCnsOT-",
+    "pdfLink": "https://drive.google.com/file/d/1fxqlNqJooHz1G9--exCtoTP59BlAlJyi/view?usp=sharing",
+    "status": "Not Started",
+    "revision": "Pending",
+    "notes": "\u23f1\ufe0f 1h 34m \u2022 YouTube Live & PDF",
+    "id": 21
+  },
+  {
+    "chapter": "Alcohol, Phenol, Ethers & Epoxides",
+    "category": "Champs Class",
+    "title": "Unacademy HOTS (Alcohol, Phenol, Ethers and Epoxides)",
+    "classLink": "https://unacademy.com/class/conceptual-brainstorming-and-hots-on-alcohol-phenol-and-ether-ape/JQBQPMSH",
+    "pdfLink": "",
+    "status": "Not Started",
+    "revision": "Pending",
+    "notes": "",
+    "id": 22
+  },
+  {
+    "chapter": "Aldehydes, Ketones & Carboxylic Acids",
+    "category": "Detailed Course",
+    "title": "Detailed Course on Aldehydes, Ketones and Carboxylic Acids",
+    "classLink": "https://unacademy.com/course/nexus-detailed-course-on-aldehydes-ketones-and-carboxylic-acids-for-jee-2027/W5DG1WS2",
+    "pdfLink": "",
+    "status": "Not Started",
+    "revision": "Pending",
+    "notes": "",
+    "id": 23
+  },
+  {
+    "chapter": "Aldehydes, Ketones & Carboxylic Acids",
+    "category": "Problem Solving",
+    "title": "HOTS Problem Solving Course on Aldehydes and Ketones",
+    "classLink": "https://unacademy.com/course/jee-2027-hots-problem-solving-course-on-aldehydes-and-ketones/Z87IEVY3",
+    "pdfLink": "",
+    "status": "Not Started",
+    "revision": "Pending",
+    "notes": "",
+    "id": 24
+  },
+  {
+    "chapter": "Aldehydes, Ketones & Carboxylic Acids",
+    "category": "Champs Class",
+    "title": "MKA Sir Champs Lecture - Aldehyde & Ketones (Part-1)",
+    "classLink": "https://www.youtube.com/live/R2MwAiiMz5Q?si=kEkCkox_CSb1Sn25",
+    "pdfLink": "https://drive.google.com/file/d/1q4rvzONyf3iL01jaKqASkG-IUQG0zGEx/view?usp=sharing",
+    "status": "Not Started",
+    "revision": "Pending",
+    "notes": "\u23f1\ufe0f 1h 56m \u2022 YouTube Live & PDF",
+    "id": 25
+  },
+  {
+    "chapter": "Aldehydes, Ketones & Carboxylic Acids",
+    "category": "Champs Class",
+    "title": "MKA Sir Champs Lecture - Aldehyde & Ketones (Part-2)",
+    "classLink": "https://youtube.com/live/uFNSmdmAmE8?feature=share",
+    "pdfLink": "https://drive.google.com/file/d/19j6Vw8TQ8HfByFHKB4eQ_FrZRDiPYflC/view?usp=sharing",
+    "status": "Not Started",
+    "revision": "Pending",
+    "notes": "\u23f1\ufe0f 3h 06m \u2022 YouTube Live & PDF",
+    "id": 26
+  },
+  {
+    "chapter": "Aldehydes, Ketones & Carboxylic Acids",
+    "category": "Champs Class",
+    "title": "MKA Sir Champs Lecture - Complete Carboxylic Acids",
+    "classLink": "https://www.youtube.com/live/onJJ7-xCwHI?si=fjyAFAIJaBLDI4yc",
+    "pdfLink": "https://drive.google.com/file/d/1SXnkBgZY47okr_JfSn1Qy73aUwKWCyGT/view?usp=sharing",
+    "status": "Not Started",
+    "revision": "Pending",
+    "notes": "\u23f1\ufe0f 1h 36m \u2022 YouTube Live & PDF",
+    "id": 27
+  },
+  {
+    "chapter": "Aldehydes, Ketones & Carboxylic Acids",
+    "category": "Champs Class",
+    "title": "Rank Boosters & HOTs on Carbonyl Compounds",
+    "classLink": "https://unacademy.com/class/rank-boosters-and-hots-problems-on-carbonyl-compounds/8WMRNZIX",
+    "pdfLink": "https://drive.google.com/file/d/1pvLcQfH48EsBibEurx6BebVvqE9FbIf9/view?usp=sharing",
+    "status": "Not Started",
+    "revision": "Pending",
+    "notes": "\u23f1\ufe0f 1h 38m \u2022 Unacademy HOTs & PDF",
+    "id": 28
+  },
+  {
+    "chapter": "Aldehydes, Ketones & Carboxylic Acids",
+    "category": "Champs Class",
+    "title": "Rank Boosters & HOTs on Carbonyls & Carboxylic Acids",
+    "classLink": "https://unacademy.com/class/rank-boosters-and-hots-problems-on-carbonyl-compounds-and-carboxylic-acids/9WZVMU3P",
+    "pdfLink": "https://drive.google.com/file/d/1FTxzDxLA1Z_2Oxr0mZTZH9kiGXLoeCGf/view?usp=sharing",
+    "status": "Not Started",
+    "revision": "Pending",
+    "notes": "\u23f1\ufe0f 1h 39m \u2022 Unacademy HOTs & PDF",
+    "id": 29
+  },
+  {
+    "chapter": "Aldehydes, Ketones & Carboxylic Acids",
+    "category": "Champs Class",
+    "title": "Conceptual Brainstorming & HOTs on Aldehydes & Ketones",
+    "classLink": "https://unacademy.com/course/champs-course-on-organic-chemistry-for-jee-main-2026/TZY9K6J1?liveclass=89SVJE2K",
+    "pdfLink": "",
+    "status": "Not Started",
+    "revision": "Pending",
+    "notes": "\u23f1\ufe0f 1h 51m \u2022 Unacademy Champs",
+    "id": 30
+  },
+  {
+    "chapter": "Aldehydes, Ketones & Carboxylic Acids",
+    "category": "Champs Class",
+    "title": "Conceptual Brainstorming & HOTs on Carboxylic Acid",
+    "classLink": "https://unacademy.com/class/conceptual-brainstorming-and-hots-on-carboxylic-acids/22QOUPX3",
+    "pdfLink": "",
+    "status": "Not Started",
+    "revision": "Pending",
+    "notes": "\u23f1\ufe0f 1h 37m \u2022 Unacademy Champs",
+    "id": 31
+  },
+  {
+    "chapter": "Amines & N-Containing Compounds",
+    "category": "Detailed Course",
+    "title": "Course on Amines & N-Containing Compounds",
+    "classLink": "https://unacademy.com/course/jee-2027-course-on-amines-ncontaining-compounds-for-jee-main-advanced/Q9GPR5KK",
+    "pdfLink": "",
+    "status": "Not Started",
+    "revision": "Pending",
+    "notes": "",
+    "id": 32
+  },
+  {
+    "chapter": "Amines & N-Containing Compounds",
+    "category": "Problem Solving",
+    "title": "HOTS Problem Solving Course on Amines",
+    "classLink": "https://unacademy.com/course/jee-2027-hots-problem-solving-course-on-amines/9BQ3T22P",
+    "pdfLink": "",
+    "status": "Not Started",
+    "revision": "Pending",
+    "notes": "",
+    "id": 33
+  },
+  {
+    "chapter": "Amines & N-Containing Compounds",
+    "category": "Champs Class",
+    "title": "MKA Sir Champs Lecture - Complete Amines",
+    "classLink": "https://www.youtube.com/live/S99ePTKx9v4?si=7t_QbftnFGGIXs5s",
+    "pdfLink": "https://drive.google.com/file/d/1vtSTzxnW8peflFzVQfPgn6YDgH7Xc8KI/view?usp=sharing",
+    "status": "Not Started",
+    "revision": "Pending",
+    "notes": "\u23f1\ufe0f 1h 28m \u2022 YouTube Live & PDF",
+    "id": 34
+  },
+  {
+    "chapter": "Amines & N-Containing Compounds",
+    "category": "Champs Class",
+    "title": "Conceptual Brainstorming & HOTs on Amines",
+    "classLink": "https://unacademy.com/class/conceptual-brainstorming-and-hots-on-amines/UJQ1ZET0",
+    "pdfLink": "",
+    "status": "Not Started",
+    "revision": "Pending",
+    "notes": "\u23f1\ufe0f 1h 47m \u2022 Unacademy Champs",
+    "id": 35
+  },
+  {
+    "chapter": "Amines & N-Containing Compounds",
+    "category": "Champs Class",
+    "title": "Conceptual Brainstorming & HOTs on N-Containing Compounds",
+    "classLink": "https://unacademy.com/class/conceptual-brainstorming-and-hots-on-n-containing-compounds/A1EI6O68",
+    "pdfLink": "",
+    "status": "Not Started",
+    "revision": "Pending",
+    "notes": "\u23f1\ufe0f 1h 36m \u2022 Unacademy Champs",
+    "id": 36
+  },
+  {
+    "chapter": "Polymers & POC",
+    "category": "Detailed Course",
+    "title": "Course on Polymers & POC for JEE Main & Advanced",
+    "classLink": "https://unacademy.com/course/jee-2027-course-on-polymers-poc-for-jee-main-advanced/I5LB288Q",
+    "pdfLink": "",
+    "status": "Not Started",
+    "revision": "Pending",
+    "notes": "\ud83e\uddea Main Theory Course \u2022 JEE 2027",
+    "id": 37
+  },
+  {
+    "chapter": "Class 11th Revision Series",
+    "category": "Special Class",
+    "title": "Chapterwise Complete Revision of Full Class 11th Syllabus \u2013 1",
+    "classLink": "https://unacademy.com/class/chapterwise-complete-revision-of-full-class-11th-syllabus-1/ACUNLU1Y",
+    "pdfLink": "",
+    "status": "Not Started",
+    "revision": "Pending",
+    "notes": "\ud83d\udcc5 16/08/2026 \u2022 2:00 PM (90 Mins)",
+    "id": 38
+  },
+  {
+    "chapter": "Class 11th Revision Series",
+    "category": "Special Class",
+    "title": "Chapterwise Complete Revision of Full Class 11th Syllabus \u2013 2",
+    "classLink": "https://unacademy.com/class/chapterwise-complete-revision-of-full-class-11th-syllabus-2/HGCMOWOZ",
+    "pdfLink": "",
+    "status": "Not Started",
+    "revision": "Pending",
+    "notes": "\ud83d\udcc5 17/08/2026 \u2022 2:00 PM (90 Mins)",
+    "id": 39
+  },
+  {
+    "chapter": "Class 11th Revision Series",
+    "category": "Special Class",
+    "title": "Chapterwise Complete Revision of Full Class 11th Syllabus \u2013 3",
+    "classLink": "https://unacademy.com/class/chapterwise-complete-revision-of-full-class-11th-syllabus-3/N9MMPF8F",
+    "pdfLink": "",
+    "status": "Not Started",
+    "revision": "Pending",
+    "notes": "\ud83d\udcc5 19/08/2026 \u2022 2:00 PM (60 Mins)",
+    "id": 40
+  },
+  {
+    "chapter": "Class 11th Revision Series",
+    "category": "Special Class",
+    "title": "Chapterwise Complete Revision of Full Class 11th Syllabus \u2013 4",
+    "classLink": "https://unacademy.com/class/chapterwise-complete-revision-of-full-class-11th-syllabus-4/PRL33Y0T",
+    "pdfLink": "",
+    "status": "Not Started",
+    "revision": "Pending",
+    "notes": "\ud83d\udcc5 21/08/2026 \u2022 2:00 PM (90 Mins)",
+    "id": 41
+  },
+  {
+    "chapter": "Class 11th Revision Series",
+    "category": "Special Class",
+    "title": "Chapterwise Complete Revision of Full Class 11th Syllabus \u2013 5",
+    "classLink": "https://unacademy.com/class/chapterwise-complete-revision-of-full-class-11th-syllabus-5/9WGQAFI3",
+    "pdfLink": "",
+    "status": "Not Started",
+    "revision": "Pending",
+    "notes": "\ud83d\udcc5 24/08/2026 \u2022 2:00 PM (60 Mins)",
+    "id": 42
+  },
+  {
+    "chapter": "Class 11th Revision Series",
+    "category": "Special Class",
+    "title": "Chapterwise Complete Revision of Full Class 11th Syllabus \u2013 6",
+    "classLink": "https://unacademy.com/class/chapterwise-complete-revision-of-full-class-11th-syllabus-6/IGBPSKIX",
+    "pdfLink": "",
+    "status": "Not Started",
+    "revision": "Pending",
+    "notes": "\ud83d\udcc5 26/08/2026 \u2022 2:00 PM (90 Mins)",
+    "id": 43
+  },
+  {
+    "chapter": "Class 11th Revision Series",
+    "category": "Special Class",
+    "title": "Chapterwise Complete Revision of Full Class 11th Syllabus \u2013 7",
+    "classLink": "https://unacademy.com/class/chapterwise-complete-revision-of-full-class-11th-syllabus-7/5M6PGDD3",
+    "pdfLink": "",
+    "status": "Not Started",
+    "revision": "Pending",
+    "notes": "\ud83d\udcc5 28/08/2026 \u2022 2:00 PM (60 Mins)",
+    "id": 44
+  },
+  {
+    "chapter": "Class 11th Revision Series",
+    "category": "Special Class",
+    "title": "Chapterwise Complete Revision of Full Class 11th Syllabus \u2013 8",
+    "classLink": "https://unacademy.com/class/chapterwise-complete-revision-of-full-class-11th-syllabus-8/JNSVRIEN",
+    "pdfLink": "",
+    "status": "Not Started",
+    "revision": "Pending",
+    "notes": "\ud83d\udcc5 29/08/2026 \u2022 2:00 PM (90 Mins)",
+    "id": 45
+  },
+  {
+    "chapter": "Class 11th Revision Series",
+    "category": "Special Class",
+    "title": "Chapterwise Complete Revision of Full Class 11th Syllabus \u2013 9",
+    "classLink": "https://unacademy.com/class/chapterwise-complete-revision-of-full-class-11th-syllabus-9/9NHH9KS0",
+    "pdfLink": "",
+    "status": "Not Started",
+    "revision": "Pending",
+    "notes": "\ud83d\udcc5 31/08/2026 \u2022 2:00 PM (90 Mins)",
+    "id": 46
+  }
+];
+
+    const STORAGE_KEY = "MKA_ORGANIC_TRACKER_FORMA_V6";
+    
+    function loadInitialData() {
+      const saved = localStorage.getItem(STORAGE_KEY) || localStorage.getItem("MKA_ORGANIC_TRACKER_FORMA_V5") || localStorage.getItem("MKA_ORGANIC_TRACKER_V4") || localStorage.getItem("MKA_ORGANIC_TRACKER_V3");
+      if (!saved) return rawExcelData;
+      try {
+        const parsed = JSON.parse(saved);
+        return rawExcelData.map(rawItem => {
+          const match = parsed.find(p => p.id === rawItem.id || p.title === rawItem.title);
+          return match ? { 
+            ...rawItem, 
+            status: match.status || rawItem.status, 
+            revision: match.revision || rawItem.revision, 
+            notes: match.notes || rawItem.notes, 
+            classLink: match.classLink || rawItem.classLink, 
+            pdfLink: match.pdfLink || rawItem.pdfLink 
+          } : rawItem;
+        });
+      } catch (e) {
+        return rawExcelData;
+      }
+    }
+
+    let trackerData = loadInitialData();
+
+    function saveToStorage() {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(trackerData));
+      updateGlobalStats();
+    }
+
+    let activeTab = 'all';
+    let searchQuery = '';
+
+    // Chapter metadata
+    const chapterMeta = {
+      "Haloalkanes and Haloarenes": {
+        num: 1,
+        short: "Haloalkanes",
+        icon: "🧪",
+        desc: "Special Classes, Comprehensive Detailed Course, Champs Sessions & Exhaustive Problem Solving"
+      },
+      "Alcohol, Phenol, Ethers & Epoxides": {
+        num: 2,
+        short: "Alcohol, Phenol & Ethers",
+        icon: "🍷",
+        desc: "Brainstorming, Level 2/3 Sessions, Nexus Detailed Course & YT Champs"
+      },
+      "Aldehydes, Ketones & Carboxylic Acids": {
+        num: 3,
+        short: "Aldehydes, Ketones & Acids",
+        icon: "⚡",
+        desc: "Nexus Detailed Course, Champs YouTube Live Lectures (Part 1 & 2), Carboxylic Acids & HOTs Question Banks"
+      },
+      "Amines & N-Containing Compounds": {
+        num: 4,
+        short: "Amines & N-Compounds",
+        icon: "🧬",
+        desc: "Comprehensive Detailed Course, Champs YouTube Full Amines, HOTs & Conceptual Brainstorming"
+      },
+      "Polymers & POC": {
+        num: 5,
+        short: "Polymers & POC",
+        icon: "🔬",
+        desc: "Theory Course on Polymers, Practical Organic Chemistry (POC) & JEE Main/Advanced Prep"
+      },
+      "Class 11th Revision Series": {
+        num: 6,
+        short: "11th Revision Series",
+        icon: "🚀",
+        desc: "Chapterwise Complete Revision of Full Class 11th Syllabus by MKA Sir (Special Classes)"
+      }
+    };
+
+    function getPlatformMeta(url) {
+      if (!url) return null;
+      if (url.includes("youtube.com") || url.includes("youtu.be")) {
+        return { name: "YouTube", class: "platform-youtube", btnClass: "btn-play-youtube", icon: "fa-brands fa-youtube" };
+      }
+      return { name: "Unacademy", class: "platform-unacademy", btnClass: "btn-play-unacademy", icon: "fa-solid fa-play" };
+    }
+
+    function renderTracker() {
+      const container = document.getElementById('chaptersContainer');
+      container.innerHTML = '';
+
+      const chapters = [
+        "Haloalkanes and Haloarenes",
+        "Alcohol, Phenol, Ethers & Epoxides",
+        "Aldehydes, Ketones & Carboxylic Acids",
+        "Amines & N-Containing Compounds",
+        "Polymers & POC",
+        "Class 11th Revision Series"
+      ];
+
+      let totalVisible = 0;
+      let cardCounter = 0;
+
+      chapters.forEach(chName => {
+        if (activeTab !== 'all' && activeTab !== chName) return;
+
+        const chLectures = trackerData.filter(d => d.chapter === chName);
+        const filteredLectures = chLectures.filter(item => {
+          if (!searchQuery) return true;
+          const q = searchQuery.toLowerCase();
+          return item.title.toLowerCase().includes(q) || 
+                 item.category.toLowerCase().includes(q) || 
+                 (item.notes && item.notes.toLowerCase().includes(q));
+        });
+
+        if (filteredLectures.length === 0) return;
+        totalVisible += filteredLectures.length;
+
+        const chCompleted = chLectures.filter(d => d.status === 'Completed').length;
+        const chPercent = Math.round((chCompleted / chLectures.length) * 100);
+        const meta = chapterMeta[chName];
+
+        const sectionEl = document.createElement('section');
+        sectionEl.className = 'chapter-section';
+
+        // Chapter Header
+        sectionEl.innerHTML = `
+          <div class="chapter-section-header">
+            <div class="ch-title-area">
+              <div class="ch-icon-pill">${meta.icon}</div>
+              <div class="ch-title-text">
+                <h2>${meta.num}. ${chName}</h2>
+                <p>${meta.desc}</p>
+              </div>
+            </div>
+            <div class="ch-meta-right">
+              <span class="ch-pill-stat ${chPercent === 100 ? 'completed' : ''}">
+                <i class="fa-solid fa-chart-pie"></i> ${chCompleted}/${chLectures.length} Done (${chPercent}%)
+              </span>
+            </div>
+          </div>
+        `;
+
+        // Group lectures by category
+        const categoryOrder = ["Special Class", "Detailed Course", "Champs Class", "Problem Solving", "Revision Series"];
+        const grouped = {};
+        categoryOrder.forEach(cat => grouped[cat] = []);
+
+        filteredLectures.forEach(lec => {
+          const cat = grouped[lec.category] ? lec.category : "Special Class";
+          grouped[cat].push(lec);
+        });
+
+        const chBody = document.createElement('div');
+
+        categoryOrder.forEach(catName => {
+          const list = grouped[catName];
+          if (!list || list.length === 0) return;
+
+          let catClass = 'cat-special';
+          let catIcon = 'fa-sparkles';
+          if (catName.includes('Detailed')) { catClass = 'cat-detailed'; catIcon = 'fa-book'; }
+          else if (catName.includes('Champs')) { catClass = 'cat-champs'; catIcon = 'fa-trophy'; }
+          else if (catName.includes('Problem')) { catClass = 'cat-problem'; catIcon = 'fa-puzzle-piece'; }
+          else if (catName.includes('Revision')) { catClass = 'cat-revision'; catIcon = 'fa-fire'; }
+
+          const catGroupEl = document.createElement('div');
+          catGroupEl.className = 'category-group';
+          catGroupEl.innerHTML = `
+            <div class="cat-header">
+              <span class="cat-badge ${catClass}">
+                <i class="fa-solid ${catIcon}"></i> ${chName === 'Class 11th Revision Series' ? '11th Complete Revision Series' : catName}
+              </span>
+              <span class="cat-count">(${list.length} ${list.length === 1 ? 'Session' : 'Sessions'})</span>
+            </div>
+          `;
+
+          const cardsList = document.createElement('div');
+          cardsList.className = 'lecture-cards-list';
+
+          list.forEach(item => {
+            cardCounter++;
+            const isDone = item.status === 'Completed';
+            const statusClass = item.status.toLowerCase().replace(' ', '-');
+            const revDone = item.revision === 'Done';
+            const platform = getPlatformMeta(item.classLink);
+
+            const card = document.createElement('div');
+            card.className = `lecture-card ${isDone ? 'done' : ''}`;
+            card.style.animationDelay = `${Math.min(cardCounter * 0.035, 0.6)}s`;
+
+            card.innerHTML = `
+              <div class="lec-index">#${item.id}</div>
+              
+              <div class="lec-info">
+                <div class="lec-title">${item.title}</div>
+                <div class="lec-sub">
+                  ${platform ? `<span class="platform-badge ${platform.class}"><i class="${platform.icon}"></i> ${platform.name}</span>` : ''}
+                  ${item.notes ? `<span><i class="fa-regular fa-note-sticky" style="color:var(--cyan-bright)"></i> ${item.notes}</span>` : ''}
+                </div>
+              </div>
+
+              <div class="lec-actions">
+                ${item.classLink ? `
+                  <a href="${item.classLink}" target="_blank" class="btn-action ${platform ? platform.btnClass : 'btn-play-unacademy'}">
+                    <i class="${platform ? platform.icon : 'fa-solid fa-play'}"></i> Watch Class
+                  </a>
+                ` : `
+                  <button class="btn-action btn-notes-edit" onclick="openEditModal(${item.id})">
+                    <i class="fa-solid fa-plus"></i> Add Link
+                  </button>
+                `}
+
+                ${item.pdfLink ? `
+                  <a href="${item.pdfLink}" target="_blank" class="btn-action btn-pdf">
+                    <i class="fa-solid fa-file-pdf"></i> PDF Notes
+                  </a>
+                ` : ''}
+
+                <button class="btn-action btn-notes-edit" onclick="openEditModal(${item.id})" title="Edit note / link">
+                  <i class="fa-solid fa-pen-to-square"></i>
+                </button>
+              </div>
+
+              <div class="lec-controls">
+                <select class="status-dropdown ${statusClass}" onchange="updateStatus(${item.id}, this.value, event)">
+                  <option value="Not Started" ${item.status === 'Not Started' ? 'selected' : ''}>⬜ Not Started</option>
+                  <option value="In Progress" ${item.status === 'In Progress' ? 'selected' : ''}>🟡 In Progress</option>
+                  <option value="Completed" ${item.status === 'Completed' ? 'selected' : ''}>✅ Completed</option>
+                </select>
+
+                <div class="rev-badge ${revDone ? 'done' : 'pending'}" onclick="toggleRev(${item.id}, event)">
+                  <i class="fa-solid ${revDone ? 'fa-check-double' : 'fa-clock-rotate-left'}"></i>
+                  ${revDone ? 'Revised' : 'Rev: Pending'}
+                </div>
+              </div>
+            `;
+
+            // Attach 3D Tilt & Spotlight Hover Listeners
+            attachCardInteractions(card);
+
+            cardsList.appendChild(card);
+          });
+
+          catGroupEl.appendChild(cardsList);
+          chBody.appendChild(catGroupEl);
+        });
+
+        sectionEl.appendChild(chBody);
+        container.appendChild(sectionEl);
+      });
+
+      if (totalVisible === 0) {
+        container.innerHTML = `
+          <div style="text-align:center; padding: 60px 20px; color: var(--text-muted);">
+            <i class="fa-solid fa-magnifying-glass" style="font-size: 3rem; color: var(--cyan-bright); margin-bottom: 16px;"></i>
+            <h2>No lectures found for "${searchQuery}"</h2>
+            <p style="margin-top:8px;">Try searching with different keywords like 'Aldehyde', 'Polymers', 'Amines', or 'HOTS'</p>
+          </div>
+        `;
+      }
+
+      updateGlobalStats();
+    }
+
+    // Interactive Spotlight & 3D Tilt handler
+    function attachCardInteractions(card) {
+      card.addEventListener('mousemove', (e) => {
+        const rect = card.getBoundingClientRect();
+        const x = e.clientX - rect.left;
+        const y = e.clientY - rect.top;
+
+        card.style.setProperty('--mouse-x', `${x}px`);
+        card.style.setProperty('--mouse-y', `${y}px`);
+
+        if (window.innerWidth > 900) {
+          const centerX = rect.width / 2;
+          const centerY = rect.height / 2;
+          const rotateX = ((y - centerY) / centerY) * -4;
+          const rotateY = ((x - centerX) / centerX) * 4;
+
+          card.style.transform = `perspective(800px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) translateY(-2px)`;
+        }
+      });
+
+      card.addEventListener('mouseleave', () => {
+        card.style.transform = 'perspective(800px) rotateX(0deg) rotateY(0deg) translateY(0)';
+      });
+    }
+
+    function triggerConfetti(e) {
+      if (typeof confetti === 'function') {
+        const x = e && e.clientX ? e.clientX / window.innerWidth : 0.5;
+        const y = e && e.clientY ? e.clientY / window.innerHeight : 0.5;
+
+        confetti({
+          particleCount: 50,
+          spread: 60,
+          origin: { x, y },
+          colors: ['#00f2fe', '#38bdf8', '#10b981', '#ffffff', '#fbbf24'],
+          ticks: 200,
+          gravity: 1.2,
+          scalar: 0.9
+        });
+      }
+    }
+
+    function updateStatus(id, newStatus, event) {
+      const item = trackerData.find(d => d.id === id);
+      if (item) {
+        item.status = newStatus;
+        if (newStatus === 'Completed') {
+          triggerConfetti(event);
+        }
+        saveToStorage();
+        renderTracker();
+      }
+    }
+
+    function toggleRev(id, event) {
+      const item = trackerData.find(d => d.id === id);
+      if (item) {
+        item.revision = item.revision === 'Done' ? 'Pending' : 'Done';
+        if (item.revision === 'Done') {
+          triggerConfetti(event);
+        }
+        saveToStorage();
+        renderTracker();
+      }
+    }
+
+    function updateGlobalStats() {
+      const total = trackerData.length;
+      const done = trackerData.filter(d => d.status === 'Completed').length;
+      const inProg = trackerData.filter(d => d.status === 'In Progress').length;
+      const revised = trackerData.filter(d => d.revision === 'Done').length;
+      const percent = Math.round((done / total) * 100) || 0;
+
+      document.getElementById('total-count').innerText = total;
+      document.getElementById('done-count').innerText = done;
+      document.getElementById('prog-count').innerText = inProg;
+      document.getElementById('rev-count').innerText = revised;
+      document.getElementById('master-progress').style.width = `${percent}%`;
+
+      if (percent === 100 && typeof confetti === 'function') {
+        confetti({
+          particleCount: 150,
+          spread: 100,
+          origin: { y: 0.6 },
+          colors: ['#00f2fe', '#38bdf8', '#34d399', '#f59e0b']
+        });
+      }
+    }
+
+    function switchChapterTab(chName) {
+      activeTab = chName;
+      document.querySelectorAll('.ch-tab-btn').forEach(btn => {
+        btn.classList.remove('active');
+      });
+      event.currentTarget.classList.add('active');
+      renderTracker();
+    }
+
+    function handleSearch(val) {
+      searchQuery = val.trim();
+      renderTracker();
+    }
+
+    function openEditModal(id) {
+      const item = trackerData.find(d => d.id === id);
+      if (!item) return;
+      document.getElementById('modalLecId').value = item.id;
+      document.getElementById('modalLecHeading').innerText = `#${item.id} - ${item.title}`;
+      document.getElementById('modalLecLink').value = item.classLink || '';
+      document.getElementById('modalPdfLink').value = item.pdfLink || '';
+      document.getElementById('modalNotesText').value = item.notes || '';
+      document.getElementById('editModal').classList.add('open');
+    }
+
+    function closeModal() {
+      document.getElementById('editModal').classList.remove('open');
+    }
+
+    function saveModalChanges() {
+      const id = parseInt(document.getElementById('modalLecId').value);
+      const item = trackerData.find(d => d.id === id);
+      if (item) {
+        item.classLink = document.getElementById('modalLecLink').value.trim();
+        item.pdfLink = document.getElementById('modalPdfLink').value.trim();
+        item.notes = document.getElementById('modalNotesText').value.trim();
+        saveToStorage();
+        closeModal();
+        renderTracker();
+      }
+    }
+
+    function resetAllProgress() {
+      if (confirm("Kya aap sach me saara status reset karna chahte hain?")) {
+        trackerData = JSON.parse(JSON.stringify(rawExcelData));
+        saveToStorage();
+        renderTracker();
+      }
+    }
+
+    // --- Floating Chemistry Hexagons (Benzene) Canvas Engine ---
+    (function initBenzeneCanvas() {
+      const canvas = document.getElementById('chemCanvas');
+      if (!canvas) return;
+      const ctx = canvas.getContext('2d');
+      let width, height;
+      let particles = [];
+      let mouse = { x: -1000, y: -1000 };
+
+      function resize() {
+        width = canvas.width = window.innerWidth;
+        height = canvas.height = window.innerHeight;
+      }
+      window.addEventListener('resize', resize);
+      resize();
+
+      window.addEventListener('mousemove', (e) => {
+        mouse.x = e.clientX;
+        mouse.y = e.clientY;
+      });
+
+      class BenzeneParticle {
+        constructor() {
+          this.reset(true);
+        }
+        reset(initial = false) {
+          this.x = Math.random() * width;
+          this.y = initial ? Math.random() * height : height + 50;
+          this.radius = Math.random() * 16 + 12; // Hexagon radius
+          this.vx = (Math.random() - 0.5) * 0.4;
+          this.vy = -(Math.random() * 0.45 + 0.2);
+          this.rotation = Math.random() * Math.PI * 2;
+          this.vRot = (Math.random() - 0.5) * 0.008;
+          this.alpha = Math.random() * 0.22 + 0.08;
+          this.type = Math.random() > 0.45 ? 'benzene' : 'particle';
+        }
+        update() {
+          this.x += this.vx;
+          this.y += this.vy;
+          this.rotation += this.vRot;
+
+          // Gentle mouse evasion
+          const dx = this.x - mouse.x;
+          const dy = this.y - mouse.y;
+          const dist = Math.sqrt(dx * dx + dy * dy);
+          if (dist < 140) {
+            const force = (140 - dist) / 140;
+            this.x += (dx / dist) * force * 1.5;
+            this.y += (dy / dist) * force * 1.5;
+          }
+
+          if (this.y < -50 || this.x < -50 || this.x > width + 50) {
+            this.reset(false);
+          }
+        }
+        draw() {
+          ctx.save();
+          ctx.translate(this.x, this.y);
+          ctx.rotate(this.rotation);
+          ctx.strokeStyle = `rgba(56, 189, 248, ${this.alpha})`;
+          ctx.fillStyle = `rgba(0, 242, 254, ${this.alpha * 0.3})`;
+          ctx.lineWidth = 1;
+
+          if (this.type === 'benzene') {
+            // Draw Hexagon
+            ctx.beginPath();
+            for (let i = 0; i < 6; i++) {
+              const angle = (Math.PI / 3) * i;
+              const hx = this.radius * Math.cos(angle);
+              const hy = this.radius * Math.sin(angle);
+              if (i === 0) ctx.moveTo(hx, hy);
+              else ctx.lineTo(hx, hy);
+            }
+            ctx.closePath();
+            ctx.stroke();
+
+            // Inner aromatic ring
+            ctx.beginPath();
+            ctx.arc(0, 0, this.radius * 0.55, 0, Math.PI * 2);
+            ctx.stroke();
+          } else {
+            // Glowing node particle
+            ctx.beginPath();
+            ctx.arc(0, 0, 2.5, 0, Math.PI * 2);
+            ctx.fillStyle = `rgba(0, 242, 254, ${this.alpha * 1.5})`;
+            ctx.fill();
+          }
+          ctx.restore();
+        }
+      }
+
+      const count = Math.min(Math.floor((window.innerWidth * window.innerHeight) / 32000), 40);
+      for (let i = 0; i < count; i++) {
+        particles.push(new BenzeneParticle());
+      }
+
+      function animate() {
+        ctx.clearRect(0, 0, width, height);
+
+        // Draw connections between close particles
+        for (let i = 0; i < particles.length; i++) {
+          for (let j = i + 1; j < particles.length; j++) {
+            const dx = particles[i].x - particles[j].x;
+            const dy = particles[i].y - particles[j].y;
+            const dist = Math.sqrt(dx * dx + dy * dy);
+            if (dist < 110) {
+              ctx.beginPath();
+              ctx.strokeStyle = `rgba(56, 189, 248, ${0.12 * (1 - dist / 110)})`;
+              ctx.lineWidth = 0.6;
+              ctx.moveTo(particles[i].x, particles[i].y);
+              ctx.lineTo(particles[j].x, particles[j].y);
+              ctx.stroke();
+            }
+          }
+        }
+
+        particles.forEach(p => {
+          p.update();
+          p.draw();
+        });
+
+        requestAnimationFrame(animate);
+      }
+      animate();
+    })();
+
+    // Initial render
+    renderTracker();
+  </script>
+</body>
+</html>
